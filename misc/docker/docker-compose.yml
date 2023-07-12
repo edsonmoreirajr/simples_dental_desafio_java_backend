@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+
+  postgres_db:
+    container_name: postgres
+    image: postgres:15.3-alpine3.18
+    environment:
+      POSTGRES_DB: simplesdental
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgresql_bin:/usr/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+      - ./desafiosimplesdental_postgresql/simplesdental.sql:/docker-entrypoint-initdb.d/simplesdental.sql
+      - ./files_postgres:/files
+    ports:
+      - 55432:5432
+    networks:
+      - database
+      - application
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:7.4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - postgresql_bin:/usr/lib/postgresql
+      - pgadmin_root_prefs:/root/.pgadmin
+      - ./files_pgamdin:/files
+    ports:
+      - 5050:5050
+    networks:
+      - database
+    restart: always
+
+  simplesdental:
+    build: ./../../
+    image: simplesdental:1.0
+    ports:
+      - 8080:8080
+    networks:
+      - application
+    depends_on:
+      - postgres_db
+
+networks:
+  database:
+    driver: bridge
+  application:
+    driver: bridge
+volumes:
+  pgadmin_root_prefs:
+    driver: local
+  postgresql_data:
+    driver: local
+  postgresql_bin:
+    driver: local
+
