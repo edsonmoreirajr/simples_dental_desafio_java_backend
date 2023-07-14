@@ -16,12 +16,6 @@ DROP TABLE IF EXISTS contato;
 DROP TABLE IF EXISTS profissional;
 
 /*******************************************************************************
-   Create Types
-********************************************************************************/
-
-CREATE TYPE "public"."profissionais_cargos" AS ENUM ('Desenvolvedor', 'Designer', 'Suporte', 'Tester');
-
-/*******************************************************************************
    Create Tables
 ********************************************************************************/
 
@@ -39,9 +33,10 @@ CREATE TABLE profissional
 (
     "id" BIGSERIAL,
     "nome" VARCHAR(200) NOT NULL,
-    "cargo" profissionais_cargos CHECK ("cargo" IN ('Desenvolvedor', 'Designer', 'Suporte', 'Tester')) NOT NULL,
+    "cargo" VARCHAR(200) CHECK ("cargo" IN ('Desenvolvedor', 'Designer', 'Suporte', 'Tester')) NOT NULL,
     "nascimento" DATE NOT NULL,
     "created_date" DATE NOT NULL,
+    "ativo" BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT "PK_Profissional" PRIMARY KEY  ("id")
 );
 
@@ -59,10 +54,10 @@ ALTER TABLE contato ADD CONSTRAINT "FK_ContatoProfissionalId"
    Populate Tables
 ********************************************************************************/
 
-INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date") VALUES ('Profissional_A', 'Desenvolvedor', '1986-01-02'::DATE, CURRENT_DATE);
-INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date") VALUES ('Profissional_B', 'Designer', '1983-09-23'::DATE, CURRENT_DATE);
-INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date") VALUES ('Profissional_C', 'Suporte', '1984-04-11'::DATE, CURRENT_DATE);
-INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date") VALUES ('Profissional_D', 'Tester', '1981-02-15'::DATE, CURRENT_DATE);
+INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date", "ativo") VALUES ('Profissional_A', 'Desenvolvedor', '1986-01-02'::DATE, CURRENT_DATE, TRUE);
+INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date", "ativo") VALUES ('Profissional_B', 'Designer', '1983-09-23'::DATE, CURRENT_DATE, TRUE);
+INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date", "ativo") VALUES ('Profissional_C', 'Suporte', '1984-04-11'::DATE, CURRENT_DATE, TRUE);
+INSERT INTO profissional ("nome", "cargo", "nascimento", "created_date", "ativo") VALUES ('Profissional_D', 'Tester', '1981-02-15'::DATE, CURRENT_DATE, TRUE);
 
 INSERT INTO contato ("nome", "contato", "created_date", "profissional_id") VALUES ('fixo casa', '3433333333', CURRENT_DATE, 1);
 INSERT INTO contato ("nome", "contato", "created_date", "profissional_id") VALUES ('celular', '34999999999', CURRENT_DATE, 1);

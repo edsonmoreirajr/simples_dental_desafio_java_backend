@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Builder
@@ -34,25 +34,29 @@ public class Profissional {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    Long id;
+    private Long id;
 
     @Size(max = 200)
     @NotNull
     @Column(name = "nome", nullable = false, length = 200)
-    String nome;
+    private String nome;
 
     @NotNull
-    @Column(name = "profissionais_cargos", length = 14)
+    @Column(name = "cargo", length = 14)
     @Enumerated(EnumType.STRING)
     private ProfissionaisCargos cargo;
 
     @NotNull
     @Column(name = "nascimento", nullable = false)
-    private Date nascimento;
+    private LocalDate nascimento;
 
     @NotNull
     @Column(name = "created_date", nullable = false)
-    private Date createdDate;
+    private LocalDate createdDate;
+
+    @NotNull
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo;
 
     @Override
     public boolean equals(Object o) {

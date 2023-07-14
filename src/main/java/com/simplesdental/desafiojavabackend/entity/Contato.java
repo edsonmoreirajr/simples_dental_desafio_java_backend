@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Builder
@@ -34,21 +34,21 @@ public class Contato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    Long id;
+    private Long id;
 
     @Size(max = 200)
     @NotNull
     @Column(name = "nome", nullable = false, length = 200)
-    String nome;
+    private String nome;
 
     @Size(max = 25)
     @NotNull
     @Column(name = "contato", nullable = false, length = 25)
-    String contato;
+    private String contato;
 
     @NotNull
     @Column(name = "created_date", nullable = false)
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

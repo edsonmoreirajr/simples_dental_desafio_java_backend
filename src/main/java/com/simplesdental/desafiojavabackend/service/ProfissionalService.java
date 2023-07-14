@@ -5,9 +5,11 @@ import com.simplesdental.desafiojavabackend.dto.request.ProfissionalRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ProfissionalServie {
+import java.util.Map;
 
-    Page<ProfissionalDto> getAllProfissionals(Pageable pageable, String termoPesquisado);
+public interface ProfissionalService {
+
+    Page<Map<String, Object>> getAllProfissionais(Pageable pageable, String texto, String[] fields);
 
     ProfissionalDto createProfissional(ProfissionalRequest profissionalRequest);
 
@@ -15,5 +17,5 @@ public interface ProfissionalServie {
 
     ProfissionalDto getProfissionalById(Long id);
 
-    void deleteProfissional(Long id);
+    ProfissionalDto deleteProfissional(Long id);
 }

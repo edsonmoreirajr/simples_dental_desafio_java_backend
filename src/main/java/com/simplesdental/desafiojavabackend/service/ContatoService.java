@@ -5,9 +5,11 @@ import com.simplesdental.desafiojavabackend.dto.request.ContatoRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Map;
+
 public interface ContatoService {
 
-    Page<ContatoDto> getAllContatos(Pageable pageable, String termoPesquisado);
+    Page<Map<String, Object>> getAllContatos(Pageable pageable, String texto, String[] fields);
 
     ContatoDto createContato(ContatoRequest contatoRequest);
 

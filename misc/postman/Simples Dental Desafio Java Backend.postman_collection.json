@@ -1,0 +1,298 @@
+{
+  "info": {
+    "_postman_id": "30934abe-ca73-4eee-b60b-cc253d0b7efc",
+    "name": "Simples Dental Desafio Java Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "5661025"
+  },
+  "item": [
+    {
+      "name": "Contatos",
+      "item": [
+        {
+          "name": "getAllContatos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/contatos?page=0&size=5&q=3433333333&fields=nome,contato,created_date",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "contatos"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                },
+                {
+                  "key": "q",
+                  "value": "3433333333"
+                },
+                {
+                  "key": "fields",
+                  "value": "nome,contato,created_date"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getContatoById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/contatos/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "contatos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createContato",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"fixo casa\",\r\n    \"contato\": \"34333111111\",\r\n    \"profissionalId\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/contatos",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "contatos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateContato",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"fixo casa\",\r\n    \"contato\": \"11111111111\",\r\n    \"profissionalId\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/contatos/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "contatos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteContato",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/contatos/2",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "contatos",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profissionais",
+      "item": [
+        {
+          "name": "getAllProfissionais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/profissionais?page=0&size=5&q=Desenvolvedor&fields=nome,cargo,created_date",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "profissionais"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                },
+                {
+                  "key": "q",
+                  "value": "Desenvolvedor"
+                },
+                {
+                  "key": "fields",
+                  "value": "nome,cargo,created_date"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getProfissionalById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/profissionais/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "profissionais",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createProfissional",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Profissional_Z\",\r\n    \"cargo\": \"Desenvolvedor\",\r\n    \"nascimento\": \"1981-01-23\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/profissionais",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "profissionais"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateProfissional",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Profissional_ZZZZZ\",\r\n    \"cargo\": \"Designer\",\r\n    \"nascimento\": \"1991-01-23\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/profissionais/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "profissionais",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteProfissional",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/profissionais/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "profissionais",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

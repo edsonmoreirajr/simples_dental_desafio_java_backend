@@ -12,12 +12,12 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI simplesDentalOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("")
-                        .description("")
+                .info(new Info().title("Simples Dental Api")
+                        .description("Aplicação para testar os conhecimentos técnicos na prática")
                         .version("v1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("")
+                        .description("Simples Dental desafio Java backend")
                         .url("https://github.com/edsonmoreirajr/simples_dental_desafio_java_backend/wiki"));
     }
 }

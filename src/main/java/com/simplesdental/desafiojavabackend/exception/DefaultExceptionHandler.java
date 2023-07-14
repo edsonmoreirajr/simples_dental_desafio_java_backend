@@ -1,10 +1,10 @@
 package com.simplesdental.desafiojavabackend.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.simplesdental.desafiojavabackend.exception.entities.BusinessException;
-import com.simplesdental.desafiojavabackend.exception.entities.InvalidArgumentRequestException;
 import com.simplesdental.desafiojavabackend.dto.response.ErrorMessage;
 import com.simplesdental.desafiojavabackend.dto.response.ErrorMessages;
+import com.simplesdental.desafiojavabackend.exception.entities.BusinessException;
+import com.simplesdental.desafiojavabackend.exception.entities.InvalidArgumentRequestException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.simplesdental.desafiojavabackend.util.LoggerUtil.logErrorDefault;
+import static com.simplesdental.desafiojavabackend.util.LoggerUtil.logErrorForEnum;
+import static com.simplesdental.desafiojavabackend.util.LoggerUtil.logErrorForMultipleArguments;
 
 
 @ControllerAdvice
@@ -29,24 +31,24 @@ import java.util.regex.Pattern;
 @ResponseBody
 public class DefaultExceptionHandler {
 
-    private static final Pattern ENUM_MSG = Pattern.compile("values accepted for Enum class: \\[.+\\]");
     private static final Pattern ENUM_VALUES = Pattern.compile("\\[.+\\]");
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleBaseException(Exception ex, WebRequest request) {
-        ErrorMessage errorMessage = new ErrorMessage(
+        var errorMessage = new ErrorMessage(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getMessage(),
                 request.getDescription(false));
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage());
+        logErrorDefault(ex);
         return errorMessage;
     }
+
 
     @ExceptionHandler({BusinessException.class})
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorMessage handleBusinessException(RuntimeException ex, WebRequest request) {
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage());
+        logErrorDefault(ex);
         return new ErrorMessage(
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 ex.getMessage(),
@@ -56,7 +58,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class, EmptyResultDataAccessException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorMessage handleAsNotFound(RuntimeException ex, WebRequest request) {
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage());
+        logErrorDefault(ex);
         return new ErrorMessage(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
@@ -71,7 +73,7 @@ public class DefaultExceptionHandler {
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage handleAsBadRequest(RuntimeException ex, WebRequest request) {
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage());
+        logErrorDefault(ex);
         return new ErrorMessage(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
@@ -81,31 +83,31 @@ public class DefaultExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class,})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessages handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
-        List<String> messages = new ArrayList<>();
+        var messages = new ArrayList<String>();
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             messages.add(error.getDefaultMessage());
         }
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage() + " [" + messages + "]");
+        logErrorForMultipleArguments(ex, messages);
         return new ErrorMessages(HttpStatus.BAD_REQUEST.value(), messages, request.getDescription(false));
     }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErrorMessage handleJsonErrors(HttpMessageNotReadableException ex, WebRequest request) {
-        if (ex.getCause() != null && ex.getCause() instanceof InvalidFormatException) {
-            Matcher matchEnumMessage = ENUM_MSG.matcher(ex.getCause().getMessage());
+        if (ex.getCause() instanceof InvalidFormatException invalidFormatException) {
+            var matchEnumValues = ENUM_VALUES.matcher(invalidFormatException.getMessage());
 
-            if (matchEnumMessage.find()) {
-                Matcher matchEnumValues = ENUM_VALUES.matcher(ex.getCause().getMessage());
-                String campo = ((InvalidFormatException) ex.getCause()).getPath().get(0).getFieldName();
-                matchEnumValues.find();
-                String message = "Valor inválido para o campo: " + campo + ". Os valores possiveis são: " + matchEnumValues.group(0);
+            if (matchEnumValues.find()) {
+                String campo = invalidFormatException.getPath().get(0).getFieldName();
+                String message = "Valor inválido para o campo: " + campo + ". Os valores possíveis são: " + matchEnumValues.group(0);
 
-                log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage() + " " + message);
+                logErrorForEnum(ex, message);
                 return new ErrorMessage(HttpStatus.BAD_REQUEST.value(), message, request.getDescription(false));
             }
         }
-        log.error(ex.getClass().getCanonicalName() + ": " + ex.getMessage());
+
+        logErrorDefault(ex);
         return new ErrorMessage(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getDescription(false));
     }
 }

@@ -33,6 +33,7 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.jeasy:easy-random-core:5.0.0'
+	testImplementation 'com.h2database:h2:2.2.220'
 }
 
 tasks.named('test') {
